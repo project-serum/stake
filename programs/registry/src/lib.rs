@@ -784,7 +784,7 @@ pub struct Stake<'info> {
 #[derive(Accounts)]
 pub struct StartUnstake<'info> {
     // Stake instance globals.
-    #[account(has_one = reward_event_q)]
+    #[account(has_one = reward_event_q, has_one = pool_mint)]
     registrar: ProgramAccount<'info, Registrar>,
     reward_event_q: ProgramAccount<'info, RewardQueue>,
     #[account(mut)]
