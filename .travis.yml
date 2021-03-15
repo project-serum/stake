@@ -50,4 +50,5 @@ jobs:
     - <<: *defaults
       name: Runs the tests
       script:
+        - cargo test --lib
         - anchor test
