@@ -13,6 +13,6 @@ no-entrypoint = []
 cpi = ["no-entrypoint"]
 
 [dependencies]
-anchor-lang = "0.4.1"
-anchor-spl = "0.4.1"
+anchor-lang = "0.4.4"
+anchor-spl = "0.4.4"
 lockup = { path = "../lockup", features = ["cpi"] }
