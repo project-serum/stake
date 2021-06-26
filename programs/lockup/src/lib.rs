@@ -5,8 +5,11 @@ use anchor_lang::prelude::*;
 use anchor_lang::solana_program::instruction::Instruction;
 use anchor_lang::solana_program::program;
 use anchor_spl::token::{self, TokenAccount, Transfer};
+use solana_program::declare_id;
 
 mod calculator;
+
+declare_id!("GrAkKfEpTKQuVHG2Y97Y2FF4i7y7Q5AHLK94JBy7Y5yv");
 
 #[program]
 pub mod lockup {
