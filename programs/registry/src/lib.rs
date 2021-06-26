@@ -5,7 +5,10 @@ use anchor_lang::prelude::*;
 use anchor_lang::solana_program::program_option::COption;
 use anchor_spl::token::{self, Mint, TokenAccount, Transfer};
 use lockup::{CreateVesting, RealizeLock, Realizor, Vesting};
+use solana_program::declare_id;
 use std::convert::Into;
+
+declare_id!("GrAkKfEpTKQuVHG2Y97Y2FF4i7y7Q5AHLK94JBy7Y5yv");
 
 #[program]
 mod registry {
@@ -499,8 +502,11 @@ mod registry {
         let signer = &[&seeds[..]];
         let mut remaining_accounts: &[AccountInfo] = ctx.remaining_accounts;
         let cpi_program = ctx.accounts.lockup_program.clone();
-        let cpi_accounts =
-            CreateVesting::try_accounts(ctx.accounts.lockup_program.key, &mut remaining_accounts)?;
+        let cpi_accounts = CreateVesting::try_accounts(
+            ctx.accounts.lockup_program.key,
+            &mut remaining_accounts,
+            &[],
+        )?;
         let cpi_ctx = CpiContext::new_with_signer(cpi_program, cpi_accounts, signer);
         lockup::cpi::create_vesting(
             cpi_ctx,
@@ -919,25 +925,25 @@ pub struct WithdrawLocked<'info> {
 pub struct DropReward<'info> {
     // Staking instance.
     #[account(has_one = reward_event_q, has_one = pool_mint)]
-    registrar: ProgramAccount<'info, Registrar>,
+    pub registrar: ProgramAccount<'info, Registrar>,
     #[account(mut)]
-    reward_event_q: ProgramAccount<'info, RewardQueue>,
-    pool_mint: CpiAccount<'info, Mint>,
+    pub reward_event_q: ProgramAccount<'info, RewardQueue>,
+    pub pool_mint: CpiAccount<'info, Mint>,
     // Vendor.
     #[account(init)]
-    vendor: ProgramAccount<'info, RewardVendor>,
+    pub vendor: ProgramAccount<'info, RewardVendor>,
     #[account(mut)]
-    vendor_vault: CpiAccount<'info, TokenAccount>,
+    pub vendor_vault: CpiAccount<'info, TokenAccount>,
     // Depositor.
     #[account(mut)]
-    depositor: AccountInfo<'info>,
+    pub depositor: AccountInfo<'info>,
     #[account(signer)]
-    depositor_authority: AccountInfo<'info>,
+    pub depositor_authority: AccountInfo<'info>,
     // Misc.
     #[account("token_program.key == &token::ID")]
-    token_program: AccountInfo<'info>,
-    clock: Sysvar<'info, Clock>,
-    rent: Sysvar<'info, Rent>,
+    pub token_program: AccountInfo<'info>,
+    pub clock: Sysvar<'info, Clock>,
+    pub rent: Sysvar<'info, Rent>,
 }
 
 impl<'info> DropReward<'info> {
