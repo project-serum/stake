@@ -13,8 +13,8 @@ no-entrypoint = []
 cpi = ["no-entrypoint"]
 
 [dependencies]
-anchor-lang = { path = "/home/armaniferrante/Documents/code/src/github.com/project-serum/anchor/lang" }
-anchor-spl = { path = "/home/armaniferrante/Documents/code/src/github.com/project-serum/anchor/spl" }
+anchor-lang = { path = "../../../../../../lang" }
+anchor-spl = { path = "../../../../../../spl" }
 solana-program = "1.7.1"
 #anchor-lang = "0.4.4"
 #anchor-spl = "0.4.4"
