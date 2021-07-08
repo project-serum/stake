@@ -378,6 +378,28 @@ mod registry {
         if ctx.accounts.clock.unix_timestamp >= expiry_ts {
             return Err(ErrorCode::InvalidExpiry.into());
         }
+        if ctx.accounts.registrar.to_account_info().key == &fida_registrar::ID {
+            if ctx.accounts.vendor_vault.mint != fida_mint::ID {
+                return Err(ErrorCode::InvalidMint.into());
+            }
+            if total < FIDA_MIN_REWARD {
+                return Err(ErrorCode::InsufficientReward.into());
+            }
+        } else if ctx.accounts.registrar.to_account_info().key == &srm_registrar::ID
+            || ctx.accounts.registrar.to_account_info().key == &msrm_registrar::ID
+        {
+            if ctx.accounts.vendor_vault.mint != srm_mint::ID {
+                return Err(ErrorCode::InvalidMint.into());
+            }
+            if total < SRM_MIN_REWARD {
+                return Err(ErrorCode::InsufficientReward.into());
+            }
+        } else {
+            // TODO: in a future major version upgrade. Add the amount + mint
+            //       to the registrar so that one can remove the hardcoded
+            //       variables.
+            solana_program::msg!("Reward amount not constrained. Please open a pull request.");
+        }
         if let RewardVendorKind::Locked {
             start_ts,
             end_ts,
@@ -1252,6 +1274,8 @@ pub enum ErrorCode {
     InvalidVestingSchedule,
     #[msg("Please specify the correct authority for this program.")]
     InvalidProgramAuthority,
+    #[msg("Invalid mint supplied")]
+    InvalidMint,
 }
 
 impl<'a, 'b, 'c, 'info> From<&mut Deposit<'info>>
@@ -1350,4 +1374,24 @@ pub fn no_available_rewards<'info>(
     }
 
     Ok(())
+}
+
+// Native units.
+pub const SRM_MIN_REWARD: u64 = 500_000_000;
+pub const FIDA_MIN_REWARD: u64 = 900_000_000;
+
+pub mod srm_registrar {
+    solana_program::declare_id!("5vJRzKtcp4fJxqmR7qzajkaKSiAb6aT9grRsaZKXU222");
+}
+pub mod msrm_registrar {
+    solana_program::declare_id!("7uURiX2DwCpRuMFebKSkFtX9v5GK1Cd8nWLL8tyoyxZY");
+}
+pub mod fida_registrar {
+    solana_program::declare_id!("5C2ayX1E2SJ5kKEmDCA9ue9eeo3EPR34QFrhyzbbs3qh");
+}
+pub mod srm_mint {
+    solana_program::declare_id!("SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt");
+}
+pub mod fida_mint {
+    solana_program::declare_id!("EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp");
 }
