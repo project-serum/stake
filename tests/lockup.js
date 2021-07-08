@@ -42,12 +42,12 @@ describe("Lockup and Registry", () => {
     assert.ok(lockupAccount.authority.equals(provider.wallet.publicKey));
     assert.ok(lockupAccount.whitelist.length === WHITELIST_SIZE);
     lockupAccount.whitelist.forEach((e) => {
-      assert.ok(e.programId.equals(new anchor.web3.PublicKey()));
+      assert.ok(e.programId.equals(anchor.web3.PublicKey.default));
     });
   });
 
   it("Deletes the default whitelisted addresses", async () => {
-    const defaultEntry = { programId: new anchor.web3.PublicKey() };
+    const defaultEntry = { programId: anchor.web3.PublicKey.default };
     await lockup.state.rpc.whitelistDelete(defaultEntry, {
       accounts: {
         authority: provider.wallet.publicKey,
@@ -389,7 +389,7 @@ describe("Lockup and Registry", () => {
 
     assert.ok(memberAccount.registrar.equals(registrar.publicKey));
     assert.ok(memberAccount.beneficiary.equals(provider.wallet.publicKey));
-    assert.ok(memberAccount.metadata.equals(new anchor.web3.PublicKey()));
+    assert.ok(memberAccount.metadata.equals(anchor.web3.PublicKey.default));
     assert.equal(
       JSON.stringify(memberAccount.balances),
       JSON.stringify(balances)

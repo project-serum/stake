@@ -16,3 +16,4 @@ cpi = ["no-entrypoint"]
 anchor-lang = "0.4.4"
 anchor-spl = "0.4.4"
 lockup = { path = "../lockup", features = ["cpi"] }
+solana-program = "1.6.6"
