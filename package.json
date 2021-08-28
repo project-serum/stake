@@ -1,0 +1,27 @@
+{
+  "name": "stake",
+  "version": "1.0.0",
+  "description": "Programs for staking and lockups. For a technical introduction, see the [docs](./docs).",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "anchor build",
+    "test": "anchor test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/project-serum/stake.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/project-serum/stake/issues"
+  },
+  "homepage": "https://github.com/project-serum/stake#readme",
+  "devDependencies": {
+    "@project-serum/anchor-cli": "^0.13.2"
+  }
+}
