@@ -588,9 +588,9 @@ mod registry {
 
 #[derive(Accounts)]
 pub struct Initialize<'info> {
-    #[account(init)]
+    #[account(zero)]
     registrar: ProgramAccount<'info, Registrar>,
-    #[account(init)]
+    #[account(zero)]
     reward_event_q: ProgramAccount<'info, RewardQueue>,
     #[account("pool_mint.decimals == 0")]
     pool_mint: CpiAccount<'info, Mint>,
@@ -628,7 +628,7 @@ pub struct CreateMember<'info> {
     // Stake instance.
     registrar: ProgramAccount<'info, Registrar>,
     // Member.
-    #[account(init)]
+    #[account(zero)]
     member: ProgramAccount<'info, Member>,
     #[account(signer)]
     beneficiary: AccountInfo<'info>,
@@ -760,11 +760,8 @@ pub struct DepositLocked<'info> {
     )]
     member_vault: CpiAccount<'info, TokenAccount>,
     #[account(
-        seeds = [
-            registrar.to_account_info().key.as_ref(),
-            member.to_account_info().key.as_ref(),
-            &[member.nonce],
-        ]
+        seeds = [registrar.to_account_info().key.as_ref(), member.to_account_info().key.as_ref()],
+				bump = member.nonce,
     )]
     member_signer: AccountInfo<'info>,
 
@@ -798,14 +795,11 @@ pub struct Stake<'info> {
 
     // Program signers.
     #[account(
-        seeds = [
-            registrar.to_account_info().key.as_ref(),
-            member.to_account_info().key.as_ref(),
-            &[member.nonce],
-        ]
+        seeds = [registrar.to_account_info().key.as_ref(), member.to_account_info().key.as_ref()],
+				bump = member.nonce,
     )]
     member_signer: AccountInfo<'info>,
-    #[account(seeds = [registrar.to_account_info().key.as_ref(), &[registrar.nonce]])]
+    #[account(seeds = [registrar.to_account_info().key.as_ref()], bump = registrar.nonce)]
     registrar_signer: AccountInfo<'info>,
 
     // Misc.
@@ -824,7 +818,7 @@ pub struct StartUnstake<'info> {
     pool_mint: AccountInfo<'info>,
 
     // Member.
-    #[account(init)]
+    #[account(zero)]
     pending_withdrawal: ProgramAccount<'info, PendingWithdrawal>,
     #[account(has_one = beneficiary, has_one = registrar)]
     member: ProgramAccount<'info, Member>,
@@ -837,11 +831,8 @@ pub struct StartUnstake<'info> {
 
     // Programmatic signers.
     #[account(
-        seeds = [
-            registrar.to_account_info().key.as_ref(),
-            member.to_account_info().key.as_ref(),
-            &[member.nonce],
-        ]
+        seeds = [registrar.to_account_info().key.as_ref(), member.to_account_info().key.as_ref()],
+        bump = member.nonce,
     )]
     member_signer: AccountInfo<'info>,
 
@@ -873,11 +864,8 @@ pub struct EndUnstake<'info> {
     vault_pw: AccountInfo<'info>,
 
     #[account(
-        seeds = [
-            registrar.to_account_info().key.as_ref(),
-            member.to_account_info().key.as_ref(),
-            &[member.nonce],
-        ]
+        seeds = [registrar.to_account_info().key.as_ref(), member.to_account_info().key.as_ref()],
+				bump = member.nonce
     )]
     member_signer: AccountInfo<'info>,
 
@@ -898,11 +886,8 @@ pub struct Withdraw<'info> {
     #[account(mut, "vault.to_account_info().key == &member.balances.vault")]
     vault: CpiAccount<'info, TokenAccount>,
     #[account(
-        seeds = [
-            registrar.to_account_info().key.as_ref(),
-            member.to_account_info().key.as_ref(),
-            &[member.nonce],
-        ]
+        seeds = [registrar.to_account_info().key.as_ref(), member.to_account_info().key.as_ref()],
+				bump = member.nonce,
     )]
     member_signer: AccountInfo<'info>,
     // Receiver.
@@ -933,11 +918,8 @@ pub struct WithdrawLocked<'info> {
     )]
     member_vault: CpiAccount<'info, TokenAccount>,
     #[account(
-        seeds = [
-            registrar.to_account_info().key.as_ref(),
-            member.to_account_info().key.as_ref(),
-            &[member.nonce],
-        ]
+        seeds = [registrar.to_account_info().key.as_ref(), member.to_account_info().key.as_ref()],
+				bump = member.nonce
     )]
     member_signer: AccountInfo<'info>,
 
@@ -959,7 +941,7 @@ pub struct DropReward<'info> {
     pub reward_event_q: ProgramAccount<'info, RewardQueue>,
     pub pool_mint: CpiAccount<'info, Mint>,
     // Vendor.
-    #[account(init)]
+    #[account(zero)]
     pub vendor: ProgramAccount<'info, RewardVendor>,
     #[account(mut)]
     pub vendor_vault: CpiAccount<'info, TokenAccount>,
@@ -1030,11 +1012,8 @@ pub struct ClaimRewardCommon<'info> {
     #[account(mut)]
     vault: AccountInfo<'info>,
     #[account(
-        seeds = [
-            registrar.to_account_info().key.as_ref(),
-            vendor.to_account_info().key.as_ref(),
-            &[vendor.nonce],
-        ]
+        seeds = [registrar.to_account_info().key.as_ref(), vendor.to_account_info().key.as_ref()],
+				bump = vendor.nonce,
     )]
     vendor_signer: AccountInfo<'info>,
     // Misc.
@@ -1053,11 +1032,8 @@ pub struct ExpireReward<'info> {
     #[account(mut)]
     vault: CpiAccount<'info, TokenAccount>,
     #[account(
-        seeds = [
-            registrar.to_account_info().key.as_ref(),
-            vendor.to_account_info().key.as_ref(),
-            &[vendor.nonce],
-        ]
+        seeds = [registrar.to_account_info().key.as_ref(), vendor.to_account_info().key.as_ref()],
+				bump = vendor.nonce,
     )]
     vendor_signer: AccountInfo<'info>,
     // Receiver.
