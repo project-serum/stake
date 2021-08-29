@@ -9,6 +9,7 @@ env:
     - ANCHOR_VERSION="0.4.4"
 
 before_deploy:
+  - cargo install --git https://github.com/project-serum/anchor --tag v${ANCHOR_VERSION} anchor-cli --locked
   - anchor build --verifiable
   - echo "### SHA256 Checksums" > release_notes.md
   - sha256sum target/deploy/lockup.so > lockup_binary.txt

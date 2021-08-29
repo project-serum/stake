@@ -22,6 +22,6 @@
   },
   "homepage": "https://github.com/project-serum/stake#readme",
   "devDependencies": {
-    "@project-serum/anchor-cli": "^0.13.2"
+    "@project-serum/anchor-cli": "^0.4.4"
   }
 }
