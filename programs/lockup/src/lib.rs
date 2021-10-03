@@ -211,19 +211,19 @@ pub struct Auth<'info> {
 pub struct CreateVesting<'info> {
     // Vesting.
     #[account(zero)]
-    vesting: ProgramAccount<'info, Vesting>,
+    pub vesting: ProgramAccount<'info, Vesting>,
     #[account(mut)]
-    vault: CpiAccount<'info, TokenAccount>,
+    pub vault: CpiAccount<'info, TokenAccount>,
     // Depositor.
     #[account(mut)]
-    depositor: AccountInfo<'info>,
+    pub depositor: AccountInfo<'info>,
     #[account(signer)]
-    depositor_authority: AccountInfo<'info>,
+    pub depositor_authority: AccountInfo<'info>,
     // Misc.
     #[account("token_program.key == &token::ID")]
-    token_program: AccountInfo<'info>,
-    rent: Sysvar<'info, Rent>,
-    clock: Sysvar<'info, Clock>,
+    pub token_program: AccountInfo<'info>,
+    pub rent: Sysvar<'info, Rent>,
+    pub clock: Sysvar<'info, Clock>,
 }
 
 impl<'info> CreateVesting<'info> {

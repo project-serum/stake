@@ -25,7 +25,7 @@ checksum = "6b2d54853319fd101b8dd81de382bcbf3e03410a64d8928bbee85a3e7dcde483"
 
 [[package]]
 name = "anchor-attribute-access-control"
-version = "0.15.0"
+version = "0.16.2"
 dependencies = [
  "anchor-syn",
  "anyhow",
@@ -37,7 +37,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-attribute-account"
-version = "0.15.0"
+version = "0.16.2"
 dependencies = [
  "anchor-syn",
  "anyhow",
@@ -50,7 +50,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-attribute-error"
-version = "0.15.0"
+version = "0.16.2"
 dependencies = [
  "anchor-syn",
  "proc-macro2",
@@ -60,7 +60,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-attribute-event"
-version = "0.15.0"
+version = "0.16.2"
 dependencies = [
  "anchor-syn",
  "anyhow",
@@ -71,7 +71,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-attribute-interface"
-version = "0.15.0"
+version = "0.16.2"
 dependencies = [
  "anchor-syn",
  "anyhow",
@@ -83,7 +83,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-attribute-program"
-version = "0.15.0"
+version = "0.16.2"
 dependencies = [
  "anchor-syn",
  "anyhow",
@@ -94,7 +94,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-attribute-state"
-version = "0.15.0"
+version = "0.16.2"
 dependencies = [
  "anchor-syn",
  "anyhow",
@@ -105,7 +105,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-derive-accounts"
-version = "0.15.0"
+version = "0.16.2"
 dependencies = [
  "anchor-syn",
  "anyhow",
@@ -116,7 +116,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-lang"
-version = "0.15.0"
+version = "0.16.2"
 dependencies = [
  "anchor-attribute-access-control",
  "anchor-attribute-account",
@@ -135,18 +135,19 @@ dependencies = [
 
 [[package]]
 name = "anchor-spl"
-version = "0.15.0"
+version = "0.16.2"
 dependencies = [
  "anchor-lang",
  "lazy_static",
  "serum_dex",
  "solana-program",
+ "spl-associated-token-account",
  "spl-token",
 ]
 
 [[package]]
 name = "anchor-syn"
-version = "0.15.0"
+version = "0.16.2"
 dependencies = [
  "anyhow",
  "bs58 0.3.1",
@@ -975,7 +976,7 @@ dependencies = [
 [[package]]
 name = "serum_dex"
 version = "0.4.0"
-source = "git+https://github.com/project-serum/serum-dex#d82f6cd7a0b8d966a79c8e60e6139129b01256da"
+source = "git+https://github.com/project-serum/serum-dex?rev=1be91f2#1be91f2863d8ecede32daaae7e768034e24bbc79"
 dependencies = [
  "arrayref",
  "bincode",
@@ -1109,6 +1110,16 @@ dependencies = [
  "quote",
  "rustversion",
  "syn",
+]
+
+[[package]]
+name = "spl-associated-token-account"
+version = "1.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "393e2240d521c3dd770806bff25c2c00d761ac962be106e14e22dd912007f428"
+dependencies = [
+ "solana-program",
+ "spl-token",
 ]
 
 [[package]]
