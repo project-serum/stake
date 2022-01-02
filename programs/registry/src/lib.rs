@@ -1,6 +1,9 @@
 //! A relatively advanced example of a staking program. If you're new to Anchor,
 //! it's suggested to start with the other examples.
-
+//! 
+use anchor_lang::accounts::{
+    cpi_account::CpiAccount, program_account::ProgramAccount, state::ProgramState,
+};
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::program_option::COption;
 use anchor_spl::token::{self, Mint, TokenAccount, Transfer};
