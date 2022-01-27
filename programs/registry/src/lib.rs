@@ -1,6 +1,6 @@
 //! A relatively advanced example of a staking program. If you're new to Anchor,
 //! it's suggested to start with the other examples.
-//! 
+//!
 use anchor_lang::accounts::{
     cpi_account::CpiAccount, program_account::ProgramAccount, state::ProgramState,
 };
@@ -534,11 +534,13 @@ mod registry {
         let signer = &[&seeds[..]];
         let mut remaining_accounts: &[AccountInfo] = ctx.remaining_accounts;
         let cpi_program = ctx.accounts.lockup_program.clone();
+        let mut bumps = std::colections::BTreeMap::new();
         let cpi_accounts = {
             let accs = CreateVesting::try_accounts(
                 ctx.accounts.lockup_program.key,
                 &mut remaining_accounts,
                 &[],
+                &mut bumps,
             )?;
             lockup::cpi::accounts::CreateVesting {
                 vesting: accs.vesting.to_account_info(),
