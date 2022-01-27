@@ -534,7 +534,7 @@ mod registry {
         let signer = &[&seeds[..]];
         let mut remaining_accounts: &[AccountInfo] = ctx.remaining_accounts;
         let cpi_program = ctx.accounts.lockup_program.clone();
-        let mut bumps = std::colections::BTreeMap::new();
+        let mut bumps = std::collections::BTreeMap::new();
         let cpi_accounts = {
             let accs = CreateVesting::try_accounts(
                 ctx.accounts.lockup_program.key,
