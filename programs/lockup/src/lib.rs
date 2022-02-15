@@ -215,7 +215,7 @@ pub struct CreateVesting<'info> {
     #[account(signer)]
     depositor_authority: AccountInfo<'info>,
     // Misc.
-    #[account("token_program.key == &token::ID")]
+    #[account(constraint = token_program.key == &token::ID)]
     token_program: AccountInfo<'info>,
     rent: Sysvar<'info, Rent>,
     clock: Sysvar<'info, Clock>,
@@ -256,7 +256,7 @@ pub struct Withdraw<'info> {
     #[account(mut)]
     token: CpiAccount<'info, TokenAccount>,
     // Misc.
-    #[account("token_program.key == &token::ID")]
+    #[account(constraint = token_program.key == &token::ID)]
     token_program: AccountInfo<'info>,
     clock: Sysvar<'info, Clock>,
 }
@@ -281,11 +281,11 @@ pub struct WhitelistTransfer<'info> {
     // Whitelist interface.
     #[account(mut, has_one = beneficiary, has_one = vault)]
     vesting: ProgramAccount<'info, Vesting>,
-    #[account(mut, "&vault.owner == vesting_signer.key")]
+    #[account(mut, constraint = &vault.owner == vesting_signer.key)]
     vault: CpiAccount<'info, TokenAccount>,
     #[account(seeds = [vesting.to_account_info().key.as_ref(), &[vesting.nonce]])]
     vesting_signer: AccountInfo<'info>,
-    #[account("token_program.key == &token::ID")]
+    #[account(constraint = token_program.key == &token::ID)]
     token_program: AccountInfo<'info>,
     #[account(mut)]
     whitelisted_program_vault: AccountInfo<'info>,
