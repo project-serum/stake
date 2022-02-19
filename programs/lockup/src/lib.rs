@@ -42,10 +42,10 @@ pub mod lockup {
         #[access_control(whitelist_auth(self, &ctx))]
         pub fn whitelist_add(&mut self, ctx: Context<Auth>, entry: WhitelistEntry) -> Result<()> {
             if self.whitelist.len() == Self::WHITELIST_SIZE {
-                return Err(ErrorCode::WhitelistFull.into());
+                return Err(error!(ErrorCode::WhitelistFull));
             }
             if self.whitelist.contains(&entry) {
-                return Err(ErrorCode::WhitelistEntryAlreadyExists.into());
+                return Err(error!(ErrorCode::WhitelistEntryAlreadyExists));
             }
             self.whitelist.push(entry);
             Ok(())
@@ -58,7 +58,7 @@ pub mod lockup {
             entry: WhitelistEntry,
         ) -> Result<()> {
             if !self.whitelist.contains(&entry) {
-                return Err(ErrorCode::WhitelistEntryNotFound.into());
+                return Err(error!(ErrorCode::WhitelistEntryNotFound));
             }
             self.whitelist.retain(|e| e != &entry);
             Ok(())
@@ -83,10 +83,10 @@ pub mod lockup {
         realizor: Option<Realizor>,
     ) -> Result<()> {
         if deposit_amount == 0 {
-            return Err(ErrorCode::InvalidDepositAmount.into());
+            return Err(error!(ErrorCode::InvalidDepositAmount));
         }
         if !is_valid_schedule(start_ts, end_ts, period_count) {
-            return Err(ErrorCode::InvalidSchedule.into());
+            return Err(error!(ErrorCode::InvalidSchedule));
         }
         let vesting = &mut ctx.accounts.vesting;
         vesting.beneficiary = beneficiary;
@@ -117,7 +117,7 @@ pub mod lockup {
                 ctx.accounts.clock.unix_timestamp,
             )
         {
-            return Err(ErrorCode::InsufficientWithdrawalBalance.into());
+            return Err(error!(ErrorCode::InsufficientWithdrawalBalance));
         }
 
         // Transfer funds out.
@@ -154,7 +154,7 @@ pub mod lockup {
         // CPI safety checks.
         let withdraw_amount = before_amount - after_amount;
         if withdraw_amount > amount {
-            return Err(ErrorCode::WhitelistWithdrawLimit)?;
+            return Err(error!(ErrorCode::WhitelistWithdrawLimit));
         }
 
         // Bookeeping.
@@ -180,10 +180,10 @@ pub mod lockup {
         // CPI safety checks.
         let deposit_amount = after_amount - before_amount;
         if deposit_amount <= 0 {
-            return Err(ErrorCode::InsufficientWhitelistDepositAmount)?;
+            return Err(error!(ErrorCode::InsufficientWhitelistDepositAmount));
         }
         if deposit_amount > ctx.accounts.transfer.vesting.whitelist_owned {
-            return Err(ErrorCode::WhitelistDepositOverflow)?;
+            return Err(error!(ErrorCode::WhitelistDepositOverflow));
         }
 
         // Bookkeeping.
@@ -238,9 +238,9 @@ impl<'info> CreateVesting<'info> {
             ],
             ctx.program_id,
         )
-        .map_err(|_| ErrorCode::InvalidProgramAddress)?;
+        .map_err(|_| error!(ErrorCode::InvalidProgramAddress))?;
         if ctx.accounts.vault.owner != vault_authority {
-            return Err(ErrorCode::InvalidVaultOwner)?;
+            return Err(error!(ErrorCode::InvalidVaultOwner));
         }
 
         Ok(())
@@ -371,7 +371,7 @@ pub struct WhitelistEntry {
     pub program_id: Pubkey,
 }
 
-#[error]
+#[error_codes]
 pub enum ErrorCode {
     #[msg("Vesting end must be greater than the current unix timestamp.")]
     InvalidTimestamp,
@@ -490,14 +490,14 @@ pub fn is_whitelisted<'info>(transfer: &WhitelistTransfer<'info>) -> Result<()> 
     if !transfer.lockup.whitelist.contains(&WhitelistEntry {
         program_id: *transfer.whitelisted_program.key,
     }) {
-        return Err(ErrorCode::WhitelistEntryNotFound.into());
+        return Err(error!(ErrorCode::WhitelistEntryNotFound));
     }
     Ok(())
 }
 
 fn whitelist_auth(lockup: &Lockup, ctx: &Context<Auth>) -> Result<()> {
     if &lockup.authority != ctx.accounts.authority.key {
-        return Err(ErrorCode::Unauthorized.into());
+        return Err(error!(ErrorCode::Unauthorized));
     }
     Ok(())
 }
@@ -523,14 +523,14 @@ fn is_realized(ctx: &Context<Withdraw>) -> Result<()> {
         let cpi_program = {
             let p = ctx.remaining_accounts[0].clone();
             if p.key != &realizor.program {
-                return Err(ErrorCode::InvalidLockRealizor.into());
+                return Err(error!(ErrorCode::InvalidLockRealizor));
             }
             p
         };
         let cpi_accounts = ctx.remaining_accounts.to_vec()[1..].to_vec();
         let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
         let vesting = (*ctx.accounts.vesting).clone();
-        realize_lock::is_realized(cpi_ctx, vesting).map_err(|_| ErrorCode::UnrealizedVesting)?;
+        realize_lock::is_realized(cpi_ctx, vesting).map_err(|_| error!(ErrorCode::UnrealizedVesting))?;
     }
     Ok(())
 }
@@ -543,5 +543,5 @@ fn is_realized(ctx: &Context<Withdraw>) -> Result<()> {
 /// until one has completely unstaked.
 #[interface]
 pub trait RealizeLock<'info, T: Accounts<'info>> {
-    fn is_realized(ctx: Context<T>, v: Vesting) -> ProgramResult;
+    fn is_realized(ctx: Context<T>, v: Vesting) -> Result<()>;
 }
