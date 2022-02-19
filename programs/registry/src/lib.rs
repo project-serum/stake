@@ -1227,7 +1227,7 @@ pub enum RewardVendorKind {
     },
 }
 
-#[error_codes]
+#[error_code]
 pub enum ErrorCode {
     #[msg("The given reward queue has already been initialized.")]
     RewardQAlreadyInitialized,

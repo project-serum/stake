@@ -371,7 +371,7 @@ pub struct WhitelistEntry {
     pub program_id: Pubkey,
 }
 
-#[error_codes]
+#[error_code]
 pub enum ErrorCode {
     #[msg("Vesting end must be greater than the current unix timestamp.")]
     InvalidTimestamp,
@@ -530,7 +530,8 @@ fn is_realized(ctx: &Context<Withdraw>) -> Result<()> {
         let cpi_accounts = ctx.remaining_accounts.to_vec()[1..].to_vec();
         let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
         let vesting = (*ctx.accounts.vesting).clone();
-        realize_lock::is_realized(cpi_ctx, vesting).map_err(|_| error!(ErrorCode::UnrealizedVesting))?;
+        realize_lock::is_realized(cpi_ctx, vesting)
+            .map_err(|_| error!(ErrorCode::UnrealizedVesting))?;
     }
     Ok(())
 }
