@@ -42,10 +42,10 @@ pub mod lockup {
         #[access_control(whitelist_auth(self, &ctx))]
         pub fn whitelist_add(&mut self, ctx: Context<Auth>, entry: WhitelistEntry) -> Result<()> {
             if self.whitelist.len() == Self::WHITELIST_SIZE {
-                return Err(error!(ErrorCode::WhitelistFull));
+                return err!(ErrorCode::WhitelistFull);
             }
             if self.whitelist.contains(&entry) {
-                return Err(error!(ErrorCode::WhitelistEntryAlreadyExists));
+                return err!(ErrorCode::WhitelistEntryAlreadyExists);
             }
             self.whitelist.push(entry);
             Ok(())
@@ -58,7 +58,7 @@ pub mod lockup {
             entry: WhitelistEntry,
         ) -> Result<()> {
             if !self.whitelist.contains(&entry) {
-                return Err(error!(ErrorCode::WhitelistEntryNotFound));
+                return err!(ErrorCode::WhitelistEntryNotFound);
             }
             self.whitelist.retain(|e| e != &entry);
             Ok(())
@@ -83,10 +83,10 @@ pub mod lockup {
         realizor: Option<Realizor>,
     ) -> Result<()> {
         if deposit_amount == 0 {
-            return Err(error!(ErrorCode::InvalidDepositAmount));
+            return err!(ErrorCode::InvalidDepositAmount);
         }
         if !is_valid_schedule(start_ts, end_ts, period_count) {
-            return Err(error!(ErrorCode::InvalidSchedule));
+            return err!(ErrorCode::InvalidSchedule);
         }
         let vesting = &mut ctx.accounts.vesting;
         vesting.beneficiary = beneficiary;
@@ -117,7 +117,7 @@ pub mod lockup {
                 ctx.accounts.clock.unix_timestamp,
             )
         {
-            return Err(error!(ErrorCode::InsufficientWithdrawalBalance));
+            return err!(ErrorCode::InsufficientWithdrawalBalance);
         }
 
         // Transfer funds out.
@@ -154,7 +154,7 @@ pub mod lockup {
         // CPI safety checks.
         let withdraw_amount = before_amount - after_amount;
         if withdraw_amount > amount {
-            return Err(error!(ErrorCode::WhitelistWithdrawLimit));
+            return err!(ErrorCode::WhitelistWithdrawLimit);
         }
 
         // Bookeeping.
@@ -180,10 +180,10 @@ pub mod lockup {
         // CPI safety checks.
         let deposit_amount = after_amount - before_amount;
         if deposit_amount <= 0 {
-            return Err(error!(ErrorCode::InsufficientWhitelistDepositAmount));
+            return err!(ErrorCode::InsufficientWhitelistDepositAmount);
         }
         if deposit_amount > ctx.accounts.transfer.vesting.whitelist_owned {
-            return Err(error!(ErrorCode::WhitelistDepositOverflow));
+            return err!(ErrorCode::WhitelistDepositOverflow);
         }
 
         // Bookkeeping.
@@ -240,7 +240,7 @@ impl<'info> CreateVesting<'info> {
         )
         .map_err(|_| error!(ErrorCode::InvalidProgramAddress))?;
         if ctx.accounts.vault.owner != vault_authority {
-            return Err(error!(ErrorCode::InvalidVaultOwner));
+            return err!(ErrorCode::InvalidVaultOwner);
         }
 
         Ok(())
@@ -490,14 +490,14 @@ pub fn is_whitelisted<'info>(transfer: &WhitelistTransfer<'info>) -> Result<()> 
     if !transfer.lockup.whitelist.contains(&WhitelistEntry {
         program_id: *transfer.whitelisted_program.key,
     }) {
-        return Err(error!(ErrorCode::WhitelistEntryNotFound));
+        return err!(ErrorCode::WhitelistEntryNotFound);
     }
     Ok(())
 }
 
 fn whitelist_auth(lockup: &Lockup, ctx: &Context<Auth>) -> Result<()> {
     if &lockup.authority != ctx.accounts.authority.key {
-        return Err(error!(ErrorCode::Unauthorized));
+        return err!(ErrorCode::Unauthorized);
     }
     Ok(())
 }
@@ -523,7 +523,7 @@ fn is_realized(ctx: &Context<Withdraw>) -> Result<()> {
         let cpi_program = {
             let p = ctx.remaining_accounts[0].clone();
             if p.key != &realizor.program {
-                return Err(error!(ErrorCode::InvalidLockRealizor));
+                return err!(ErrorCode::InvalidLockRealizor);
             }
             p
         };
