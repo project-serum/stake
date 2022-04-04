@@ -55,5 +55,4 @@ jobs:
     - <<: *defaults
       name: Runs the tests
       script:
-        - pwd
-        - anchor test 
+        - yarn test
