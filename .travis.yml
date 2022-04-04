@@ -5,7 +5,7 @@ rust:
 env:
   global:
     - NODE_VERSION="v14.7.0"
-    - SOLANA_VERSION="v1.6.6"
+    - SOLANA_VERSION="v1.8.14"
     - ANCHOR_VERSION="0.4.4"
 
 before_deploy:
