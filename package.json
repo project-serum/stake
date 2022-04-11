@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "anchor build",
-    "test": "pwd && anchor test"
+    "test": "anchor test"
   },
   "repository": {
     "type": "git",
