@@ -6,7 +6,7 @@ const utils = require("./utils");
 
 describe("Lockup and Registry", () => {
   // Read the provider from the configured environmnet.
-  const provider = anchor.Provider.env();
+  const provider = anchor.AnchorProvider.env();
 
   // Configure the client to use the provider.
   anchor.setProvider(provider);
