@@ -535,14 +535,12 @@ mod registry {
         let mut remaining_accounts: &[AccountInfo] = ctx.remaining_accounts;
         let cpi_program = ctx.accounts.lockup_program.clone();
         let mut bumps = std::collections::BTreeMap::new();
-        let mut reallocs = std::collections::BTreeSet::new();
         let cpi_accounts = {
             let accs = CreateVesting::try_accounts(
                 ctx.accounts.lockup_program.key,
                 &mut remaining_accounts,
                 &[],
                 &mut bumps,
-                &mut reallocs,
             )?;
             lockup::cpi::accounts::CreateVesting {
                 vesting: accs.vesting.to_account_info(),
