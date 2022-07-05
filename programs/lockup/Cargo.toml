@@ -15,6 +15,6 @@ cpi = ["no-entrypoint"]
 [dependencies]
 anchor-lang = { path = "../../../../../../lang" }
 anchor-spl = { path = "../../../../../../spl" }
-solana-program = "1.7.1"
+solana-program = "1.10.29"
 #anchor-lang = "0.4.4"
 #anchor-spl = "0.4.4"

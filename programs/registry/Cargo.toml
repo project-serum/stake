@@ -18,4 +18,4 @@ anchor-spl = { path = "../../../../../../spl" }
 #anchor-lang = "0.4.4"
 #anchor-spl = "0.4.4"
 lockup = { path = "../lockup", features = ["cpi"] }
-solana-program = "1.7.1"
+solana-program = "1.10.29"
