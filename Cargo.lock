@@ -24,7 +24,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-attribute-access-control"
-version = "0.21.0"
+version = "0.24.2"
 dependencies = [
  "anchor-syn",
  "anyhow",
@@ -36,7 +36,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-attribute-account"
-version = "0.21.0"
+version = "0.24.2"
 dependencies = [
  "anchor-syn",
  "anyhow",
@@ -49,7 +49,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-attribute-constant"
-version = "0.21.0"
+version = "0.24.2"
 dependencies = [
  "anchor-syn",
  "proc-macro2",
@@ -58,7 +58,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-attribute-error"
-version = "0.21.0"
+version = "0.24.2"
 dependencies = [
  "anchor-syn",
  "proc-macro2",
@@ -68,7 +68,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-attribute-event"
-version = "0.21.0"
+version = "0.24.2"
 dependencies = [
  "anchor-syn",
  "anyhow",
@@ -79,7 +79,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-attribute-interface"
-version = "0.21.0"
+version = "0.24.2"
 dependencies = [
  "anchor-syn",
  "anyhow",
@@ -91,7 +91,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-attribute-program"
-version = "0.21.0"
+version = "0.24.2"
 dependencies = [
  "anchor-syn",
  "anyhow",
@@ -102,7 +102,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-attribute-state"
-version = "0.21.0"
+version = "0.24.2"
 dependencies = [
  "anchor-syn",
  "anyhow",
@@ -113,7 +113,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-derive-accounts"
-version = "0.21.0"
+version = "0.24.2"
 dependencies = [
  "anchor-syn",
  "anyhow",
@@ -124,7 +124,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-lang"
-version = "0.21.0"
+version = "0.24.2"
 dependencies = [
  "anchor-attribute-access-control",
  "anchor-attribute-account",
@@ -146,7 +146,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-spl"
-version = "0.21.0"
+version = "0.24.2"
 dependencies = [
  "anchor-lang",
  "solana-program",
@@ -156,7 +156,7 @@ dependencies = [
 
 [[package]]
 name = "anchor-syn"
-version = "0.21.0"
+version = "0.24.2"
 dependencies = [
  "anyhow",
  "bs58 0.3.1",
